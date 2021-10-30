@@ -94,14 +94,15 @@ class OfferCard extends StatelessWidget {
                       flex: 3,
                       child: ElevatedButton(
                         child: const Text(
-                          "ver mas",
+                          "Ver más",
                           textAlign: TextAlign.end,
                         ),
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const OfferDetail()));
+                                  builder: (context) =>
+                                      OfferDetail(offer: offer)));
                         },
                         style: ElevatedButton.styleFrom(
                             primary: Colors.deepPurple),

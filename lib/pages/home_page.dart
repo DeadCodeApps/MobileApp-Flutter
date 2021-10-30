@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
 
   Future<List<Offer>> getOffers() async {
     final response =
-        await http.get(Uri.parse("http://10.0.2.2:8080/api/offers"));
+        await http.get(Uri.parse("http://localhost:8080/api/offers"));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

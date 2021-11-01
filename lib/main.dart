@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:stateful_widget/pages/home_page.dart';
+import 'package:stateful_widget/pages/register_freelancer.dart';
 
 void main() {
   // ignore: unnecessary_new
@@ -13,6 +14,6 @@ void main() {
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
-    home: HomePage(),
+    home: RegisterFreelancerForm(),
   ));
 }

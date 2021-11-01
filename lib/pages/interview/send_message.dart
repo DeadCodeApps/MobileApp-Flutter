@@ -36,8 +36,16 @@ class _SendMessageViewState extends State<SendMessageView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Card(
+    return Scaffold(
+      appBar: AppBar(title: Image.asset("assets/logo.png", height: 100.0, width: 50.0),
+      centerTitle: true,
+      leading: IconButton(
+            tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            icon: const Icon(Icons.menu),
+            onPressed: () {},
+          ),
+      ),
+      body: Card(
         elevation: 10,
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -159,7 +167,7 @@ class _SendMessageViewState extends State<SendMessageView> {
                 children: [
                   SizedBox(
                     width: 400,
-                    height: 400,
+                    height: 300,
                     child: TextField(
                       expands: true,
                       maxLines: null,
@@ -178,9 +186,6 @@ class _SendMessageViewState extends State<SendMessageView> {
             ),
 
             Container(
-              decoration: BoxDecoration(
-                            border: Border.all(color: Colors.blue)
-                          ),
                     width: 200,
                     height: 50,
               child: Row(

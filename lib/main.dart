@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:stateful_widget/pages/home_page.dart';
-import 'package:stateful_widget/pages/interview/confirm_interview_creation.dart';
 import 'package:stateful_widget/pages/interview/create_interview.dart';
 import 'package:stateful_widget/pages/interview/pending_interviews.dart';
 import 'package:stateful_widget/pages/interview/send_message.dart';

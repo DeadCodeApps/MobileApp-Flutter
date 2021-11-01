@@ -7,6 +7,8 @@ class Offer {
   final double paymentAmount;
   final int monthDuration;
   final Specialty specialty;
+  final DateTime startDate;
+  final DateTime endDate;
 
   Offer(
       {required this.id,
@@ -14,7 +16,9 @@ class Offer {
       required this.description,
       required this.paymentAmount,
       required this.monthDuration,
-      required this.specialty});
+      required this.specialty,
+      required this.startDate,
+      required this.endDate});
 
   factory Offer.fromJson(Map<String, dynamic> json) {
     return Offer(
@@ -22,8 +26,12 @@ class Offer {
       title: json['title'],
       description: json['description'],
       paymentAmount: json['paymentAmount'],
+      startDate: DateTime.parse(json['startDate']),
+      endDate: DateTime.parse(json['endDate']),
       monthDuration: json['monthDuration'],
-      specialty: Specialty.fromJson(json['specialty']),
+      specialty: Specialty.fromJson(
+        json['specialty'],
+      ),
     );
   }
 }

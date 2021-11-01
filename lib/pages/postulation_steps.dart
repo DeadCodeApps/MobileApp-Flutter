@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 
 import 'package:stateful_widget/classes/offer.dart';
+import 'package:stateful_widget/classes/postulation.dart';
 import 'package:stateful_widget/widgets/offer_detailed.dart';
 import 'package:stateful_widget/widgets/successful_postulation.dart';
 
@@ -26,15 +27,23 @@ class _PostulationStepsState extends State<PostulationSteps> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('FreelanceWorld'),
-        actions: [],
-        backgroundColor: Colors.deepPurple,
+        title: Image.asset("assets/logo.png", height: 100.0, width: 50.0),
+        centerTitle: true,
+        leading: IconButton(
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+          icon: const Icon(Icons.menu),
+          onPressed: () {},
+        ),
       ),
       body: isCompleted
-          ? SuccessfulPostulation(offer: widget.offer)
+          ? SuccessfulPostulation(
+              offer: widget.offer,
+              postulation: Postulation(
+                  description: description.text,
+                  desiredPayment: int.parse(income.text)))
           : Theme(
               data: Theme.of(context).copyWith(
-                colorScheme: ColorScheme.light(primary: Colors.deepPurple),
+                colorScheme: ColorScheme.light(primary: Colors.blue.shade900),
               ),
               child: Stepper(
                 type: StepperType.horizontal,
@@ -44,7 +53,6 @@ class _PostulationStepsState extends State<PostulationSteps> {
                   final isLastStep = currentStep == getSteps().length - 1;
                   if (isLastStep) {
                     if (isChecked) {
-                      print('Completed');
                       setState(() => isCompleted = true);
                       setState(() => showErrorMessage = false);
                     } else {
@@ -135,8 +143,8 @@ class _PostulationStepsState extends State<PostulationSteps> {
                     children: <Widget>[
                       Text("Acepto"),
                       Checkbox(
-                        focusColor: Colors.purple,
-                        activeColor: Colors.deepPurple,
+                        focusColor: Colors.blue.shade900,
+                        activeColor: Colors.blue.shade900,
                         value: isChecked,
                         onChanged: (bool? value) {
                           setState(() {

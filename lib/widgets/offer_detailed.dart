@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:stateful_widget/classes/offer.dart';
 import 'package:stateful_widget/pages/postulation_steps.dart';
+import 'package:intl/intl.dart';
 
 class OfferDetailed extends StatelessWidget {
   final Offer offer;
@@ -12,13 +13,14 @@ class OfferDetailed extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DateFormat formatter = DateFormat('dd - MM - yyyy');
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Card(
         elevation: 5,
         clipBehavior: Clip.hardEdge,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5.0),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         color: Colors.white,
         child: Column(
@@ -26,51 +28,144 @@ class OfferDetailed extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                utf8.decode(offer.title.toString().runes.toList()),
-                style:
-                    const TextStyle(fontSize: 20.0, color: Colors.deepPurple),
+            Card(
+              elevation: 5,
+              clipBehavior: Clip.hardEdge,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10.0),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                "Especialidad: " +
-                    utf8.decode(offer.specialty.name.toString().runes.toList()),
-                style: const TextStyle(fontSize: 20.0, color: Colors.black87),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Flexible(
-                      child: Text("Detalles del aviso",
-                          style:
-                              TextStyle(fontSize: 20.0, color: Colors.black87)))
+              color: Colors.white,
+              child: Column(
+                mainAxisSize: MainAxisSize.max, // size
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            offer.title,
+                            style: TextStyle(
+                                fontSize: 22.0, color: Colors.blue.shade900),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            offer.specialty.name,
+                            style: const TextStyle(
+                                fontSize: 18.0, color: Colors.black54),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Flexible(
+                          child: Text(
+                            "Sueldo: S/ " + offer.paymentAmount.toString(),
+                            style: const TextStyle(
+                                fontSize: 16.0, color: Colors.black45),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Text(offer.description,
-                        style: const TextStyle(
-                            fontSize: 17.0, color: Colors.black54)),
-                  )
+                  Flexible(
+                    child: Text(
+                      "Detalles del aviso",
+                      style: TextStyle(
+                          fontSize: 22.0, color: Colors.blue.shade900),
+                    ),
+                  ),
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(40.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text(
+                      offer.description,
+                      textAlign: TextAlign.justify,
+                      style: const TextStyle(
+                          fontSize: 18.0, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 10.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      "Tiempo de contrato (meses): " +
+                          offer.monthDuration.toString(),
+                      style: TextStyle(fontSize: 17.0, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      "Inicio: " + formatter.format(offer.startDate),
+                      style: TextStyle(fontSize: 17.0, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40.0, 10.0, 40.0, 50.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      "Fin: " + formatter.format(offer.endDate),
+                      style: TextStyle(fontSize: 17.0, color: Colors.black87),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
                     child: PopUpConfirmation(offer: offer),
@@ -92,37 +187,58 @@ class PopUpConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        onPressed: () => showDialog<String>(
-              context: context,
-              builder: (BuildContext context) => AlertDialog(
-                title: const Text('¿Proceder al proceso de postulación?'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  PostulationSteps(offer: offer)));
-                    },
-                    child: const Text('Aceptar'),
-                  ),
-                  TextButton(
-                    onPressed: () => Navigator.pop(context, 'Cancel'),
-                    child: const Text('Cancelar'),
-                  ),
-                ],
-              ),
+      onPressed: () => showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: const Text('¿Proceder al proceso de postulación?'),
+          actions: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                PostulationSteps(offer: offer)));
+                  },
+                  child: const Text('Aceptar'),
+                  style: ElevatedButton.styleFrom(
+                      padding:
+                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                      primary: Colors.blue.shade900,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      )),
+                ),
+                SizedBox(width: 25.0),
+                ElevatedButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancelar'),
+                  style: ElevatedButton.styleFrom(
+                      padding:
+                          const EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                      primary: Colors.blue.shade900,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                      )),
+                ),
+              ],
             ),
-        child: const Text(
-          'POSTULARME',
-          style: TextStyle(fontSize: 17.0),
+          ],
         ),
-        style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: const BorderSide(color: Colors.blue)))));
+      ),
+      child: const Text(
+        'POSTULARME',
+        style: TextStyle(fontSize: 20.0),
+      ),
+      style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.fromLTRB(40.0, 15.0, 40.0, 15.0),
+          primary: Colors.blue.shade900,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          )),
+    );
   }
 }

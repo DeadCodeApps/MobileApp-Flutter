@@ -1,50 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:stateful_widget/classes/freelancer.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import 'package:stateful_widget/classes/employer.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class RegisterFreelancerForm extends StatefulWidget {
-  const RegisterFreelancerForm({Key? key}) : super(key: key);
+class RegisterEmployerForm extends StatefulWidget {
+  const RegisterEmployerForm({Key? key}) : super(key: key);
 
   @override
   RegisterFormState createState() => RegisterFormState();
 }
 
-class RegisterFormState extends State<RegisterFreelancerForm> {
+class RegisterFormState extends State<RegisterEmployerForm> {
   final emailController = TextEditingController();
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
   final firstnameController = TextEditingController();
   final lastnameController = TextEditingController();
-  final birthdateController = DateRangePickerController();
   final phoneController = TextEditingController();
   final descriptionController = TextEditingController();
-  final professionController = TextEditingController();
+  final companyPhoneController = TextEditingController();
+  final companyNameController = TextEditingController();
+  final companyWebController = TextEditingController();
+  final contactCompanyEmailController = TextEditingController();
 
-  Future<Freelancer> postFreelancer(Freelancer auxFreelancer) async {
+  Future<Employer> postEmployer(Employer auxEmployer) async {
     final response = await http.post(
-      Uri.parse('https://freelance-world.herokuapp.com/api/freelancers'),
+      Uri.parse('https://freelance-world.herokuapp.com/api/employers'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, dynamic>{
-        'username': auxFreelancer.username,
-        'email': auxFreelancer.email,
-        'password': auxFreelancer.password,
-        'firstname': auxFreelancer.firstname,
-        'lastname': auxFreelancer.lastname,
-        'birthDate': auxFreelancer.birthDate,
-        'phone': auxFreelancer.phone,
-        'description': auxFreelancer.description,
-        'profession': auxFreelancer.profession
+        'username': auxEmployer.username,
+        'email': auxEmployer.email,
+        'password': auxEmployer.password,
+        'firstname': auxEmployer.firstname,
+        'lastname': auxEmployer.lastname,
+        'personalPhone': auxEmployer.personalPhone,
+        'description': auxEmployer.description,
+        'companyPhone': auxEmployer.companyPhone,
+        'companyName': auxEmployer.companyName,
+        'companyWeb': auxEmployer.companyWeb,
+        'contactCompanyEmail': auxEmployer.contactCompanyEmail
       }),
     );
 
     if (response.statusCode == 200) {
-      return Freelancer.fromJson(jsonDecode(response.body));
+      return Employer.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to create freelancer.');
+      throw Exception('Failed to create employer.');
     }
   }
 
@@ -66,7 +69,7 @@ class RegisterFormState extends State<RegisterFreelancerForm> {
             padding: const EdgeInsets.all(25.0),
             child: ListView(children: [
               Text(
-                "Registrarse como freelancer",
+                "Registrarse como empleador",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Colors.blue[800],
@@ -95,38 +98,50 @@ class RegisterFormState extends State<RegisterFreelancerForm> {
                 controller: lastnameController,
                 decoration: const InputDecoration(labelText: "Apellidos"),
               ),
-              SfDateRangePicker(
-                controller: birthdateController,
-                view: DateRangePickerView.month,
-                selectionMode: DateRangePickerSelectionMode.single,
-              ),
               TextFormField(
                 controller: phoneController,
-                decoration: const InputDecoration(labelText: "Número"),
+                decoration: const InputDecoration(labelText: "Número personal"),
               ),
               TextFormField(
                 controller: descriptionController,
                 decoration: const InputDecoration(labelText: "Descripción"),
               ),
               TextFormField(
-                controller: professionController,
-                decoration: const InputDecoration(labelText: "Profesion"),
+                controller: companyPhoneController,
+                decoration:
+                    const InputDecoration(labelText: "Número de la empresa"),
+              ),
+              TextFormField(
+                controller: companyNameController,
+                decoration:
+                    const InputDecoration(labelText: "Nombre de la empresa"),
+              ),
+              TextFormField(
+                controller: companyWebController,
+                decoration:
+                    const InputDecoration(labelText: "Web de la empresa"),
+              ),
+              TextFormField(
+                controller: contactCompanyEmailController,
+                decoration: const InputDecoration(
+                    labelText: "Correo de contacto de la empresa"),
               ),
               ElevatedButton(
                 child: const Text("Registrar"),
                 onPressed: () {
-                  Freelancer freelancer = Freelancer(
+                  Employer employer = Employer(
                       email: emailController.text,
                       username: usernameController.text,
                       password: passwordController.text,
                       firstname: firstnameController.text,
                       lastname: lastnameController.text,
-                      birthDate:
-                          birthdateController.selectedDate!.toIso8601String(),
-                      profession: professionController.text,
+                      personalPhone: phoneController.text,
                       description: descriptionController.text,
-                      phone: phoneController.text);
-                  postFreelancer(freelancer);
+                      companyPhone: companyPhoneController.text,
+                      companyName: companyNameController.text,
+                      companyWeb: companyWebController.text,
+                      contactCompanyEmail: contactCompanyEmailController.text);
+                  postEmployer(employer);
                 },
               )
             ]),

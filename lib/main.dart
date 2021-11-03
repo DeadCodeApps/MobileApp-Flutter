@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:stateful_widget/pages/home_page.dart';
+import 'package:stateful_widget/pages/login.dart';
+import 'package:stateful_widget/pages/register_employer.dart';
 import 'package:stateful_widget/pages/register_freelancer.dart';
 
 void main() {

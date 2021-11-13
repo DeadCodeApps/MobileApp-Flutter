@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'input_field.dart';
+import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -11,86 +11,74 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  Future<String> attemptLogIn(String username, String password) async {
+  var res = await http.post(
+    "$SERVER_IP/login",
+    body: {
+      "username": username,
+      "password": password
+    }
+  );
+  if(res.statusCode == 200) return res.body;
+  return null;
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //Scaffold
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        color: Colors.lightBlueAccent,
-        child: Stack(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.bottomRight,
-              heightFactor: 0.5,
-              widthFactor: 0.5,
-              child: Material(
-                borderRadius: const BorderRadius.all(Radius.circular(200.0)),
-                color: const Color.fromRGBO(255, 255, 255, 0.4),
-                child: Container(
-                  width: 400,
-                  height: 400,
-                ),
+      appBar: AppBar(
+        title: const Text("FreelanceWorld"),
+        centerTitle: true,
+        backgroundColor: Colors.deepPurple,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _usernameController,
+              decoration: const InputDecoration(
+                labelText: 'Username'
               ),
             ),
-            Center(
-              child: Container(
-                width: 400,
-                height: 400,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Material(
-                        elevation: 10.0,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(50.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.asset(
-                            "images/FreelanceWorldlogo.png",
-                            width: 200,
-                            height: 200,
-                          ),
-                        )),
-                    Form(
-                      child: InputField(
-                          //Calling inputField  class
-
-                          const Icon(
-                            Icons.person,
-                            color: Colors.white,
-                          ),
-                          "Correo"),
-                    ),
-                    Form(
-                      child: InputField(
-                          const Icon(
-                            Icons.lock,
-                            color: Colors.white,
-                          ),
-                          "Contraseña"),
-                    ),
-                    Container(
-                      width: 150,
-                      child: ElevatedButton(
-                        //Raised Button
-                        onPressed: () {
-                          ;
-                        },
-                        child: const Text(
-                          "Ingresar",
-                          style: TextStyle(fontSize: 20.0),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            TextField(
+              controller: _passwordController,
+              decoration: const InputDecoration(
+                labelText: 'Password'
               ),
             ),
+            ElevatedButton(
+              onPressed: onPressed,
+              child: const Text("Log in")
+            ),
+            ElevatedButton(
+              onPressed: onPressed,
+              child: const Text("Sign up")
+            )
           ],
         ),
       ),
     );
   }
+
+  onPressed: () async {
+  var username = _usernameController.text;
+  var password = _passwordController.text;
+
+  var jwt = await attemptLogIn(username, password);
+  if(jwt != null) {
+    storage.write(key: "jwt", value: jwt);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HomePage.fromBase64(jwt)
+      )
+    );
+  } else {
+    displayDialog(context, "An Error Occurred", "No account was found matching that username and password");
+  }
+},
 }

@@ -18,20 +18,21 @@ class SuccessfulPostulation extends StatelessWidget {
   const SuccessfulPostulation({required this.offer, required this.postulation});
 
   Future<Postulation> postPostulation(Postulation auxPostulation) async {
-    final String postUrl = "http://localhost:8080/api​/freelancers​";
-    final int freelancerId = 3;
-    final int offerId = 4;
+    final String postUrl = "https://freelance-world.herokuapp.com/api/";
+    final int freelancerId = 11;
+    final int offerId = offer.id;
 
     final String token =
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNjM1ODA4NzI5LCJleHAiOjE2MzU4MTczNjl9.BDai0fDoDHX-oc_wnGG08I7GM_uLmnW5JHkfrgOkbu34n12z24-pWyIvYMQzU-AM7IbIpmwkg5NvpciQ6n8ZqA";
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImlhdCI6MTYzNjg2MzA5OSwiZXhwIjoxNjM2ODcxNzM5fQ.MceTjyKkbB9jcodi2Fwi-P0AuDHdFBAPuNn9QYluzwCVuVsfB_KfgG43AOBnV1noLev9_jNzvyQV85OqqmF5Fw";
 
-    var urlToPost = Uri.parse(Uri.encodeFull(
-        '$postUrl/$freelancerId​/offers​/$offerId/postulations'));
-    final response = await http.post(
-      urlToPost,
-      headers: {
-        HttpHeaders.authorizationHeader: "token $token",
-        HttpHeaders.contentTypeHeader: "application/json"
+    String uri =
+        postUrl + "freelancers/$freelancerId/offers/$offerId/postulations";
+
+    var response = await http.post(
+      Uri.parse(uri),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode(<String, dynamic>{
         'desiredPayment': auxPostulation.desiredPayment,
@@ -39,13 +40,14 @@ class SuccessfulPostulation extends StatelessWidget {
       }),
     );
     if (response.statusCode == 200) {
-      return Postulation.fromJson(json.decode(response.body));
+      return Postulation.fromJson(jsonDecode(response.body));
       //return jsonDecode(response.body).cast<Map<String, dynamic>>();
     } else {
       throw Exception('Failed to create freelancer.');
     }
   }
 
+  //HttpHeaders.authorizationHeader: 'Bearer $token',
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,9 +84,9 @@ class SuccessfulPostulation extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      //postPostulation(postulation);
-                      print(postulation.description);
-                      print(postulation.desiredPayment);
+                      postPostulation(postulation);
+                      //print(postulation.description);
+                      //print(postulation.desiredPayment);
                       Navigator.push(
                           context,
                           MaterialPageRoute(

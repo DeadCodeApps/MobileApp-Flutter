@@ -16,6 +16,6 @@ void main() {
       primarySwatch: Colors.blue,
       visualDensity: VisualDensity.adaptivePlatformDensity,
     ),
-    home: RegisterFreelancerForm(),
+    home: RegisterEmployerForm(),
   ));
 }

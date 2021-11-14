@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:stateful_widget/classes/offer.dart';
+import 'package:stateful_widget/classes/token.dart';
 import 'package:stateful_widget/classes/postulation.dart';
 import 'package:stateful_widget/pages/offer_detail_page.dart';
 
@@ -22,8 +23,17 @@ class SuccessfulPostulation extends StatelessWidget {
     final int freelancerId = 11;
     final int offerId = offer.id;
 
-    final String token =
-        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImlhdCI6MTYzNjg2MzA5OSwiZXhwIjoxNjM2ODcxNzM5fQ.MceTjyKkbB9jcodi2Fwi-P0AuDHdFBAPuNn9QYluzwCVuVsfB_KfgG43AOBnV1noLev9_jNzvyQV85OqqmF5Fw";
+    var res = await http.patch(
+      Uri.parse(postUrl + "login/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8'
+      },
+      body: jsonEncode(
+          <String, dynamic>{'email': 'bill2@gmail.com', 'password': 'string'}),
+    );
+
+    final Token tokenObj = Token.fromJson(jsonDecode(res.body));
+    final String token = tokenObj.token;
 
     String uri =
         postUrl + "freelancers/$freelancerId/offers/$offerId/postulations";
@@ -41,13 +51,11 @@ class SuccessfulPostulation extends StatelessWidget {
     );
     if (response.statusCode == 200) {
       return Postulation.fromJson(jsonDecode(response.body));
-      //return jsonDecode(response.body).cast<Map<String, dynamic>>();
     } else {
       throw Exception('Failed to create freelancer.');
     }
   }
 
-  //HttpHeaders.authorizationHeader: 'Bearer $token',
   @override
   Widget build(BuildContext context) {
     return Scaffold(
